@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-packager . 'Fire Sale' --platform=all --arch=all --version=0.36.8",
-    "test": "mocha tests/test.js"
+    "test": "electron-mocha tests/test.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "chai-as-promised": "^6.0.0",
     "chai-jquery": "^2.0.0",
     "devtron": "^1.3.0",
+    "electron-mocha": "^3.3.0",
     "electron-packager": "^8.1.0",
     "electron-prebuilt": "^1.4.3",
     "mocha": "^3.2.0",

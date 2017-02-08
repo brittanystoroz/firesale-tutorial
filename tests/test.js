@@ -6,8 +6,8 @@ const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
 
 let electronPath = path.join(__dirname, '..', 'node_modules', '.bin', 'electron');
-
 let appPath = path.join(__dirname, '..');
+let mocksPath = path.join(__dirname, 'mocks.js');
 
 global.before(function () {
     chai.should();
@@ -17,7 +17,11 @@ global.before(function () {
 describe('App starts and has correct title and buttons', function () {
   let app = null
   before(function () {
-      app = new Application({ path: electronPath, args: [appPath]});
+      app = new Application({ 
+        path: electronPath,
+        env: { SPECTRON: '1' },
+        args: [appPath, '-r', mocksPath]
+      });
       return app.start();
   });
 
@@ -45,11 +49,14 @@ describe('App starts and has correct title and buttons', function () {
             .should.eventually.equal('Save Markdown')
   })
 
-  it('tests the Open button opens a file dialog', function () {
-    app.client.click('#open-file')
-    .then((dialog) => {
-      // Dialogs are tricky
-      assert.equal(dialog.status, 0);
-    })
-  })
+  it('tests the Open button opens a file dialog', function (done) {
+    app.client.click('#open-file').then((dialog) => { 
+      return app.client.getText('.raw-markdown').then(text => {
+        text.should.equal('# hi');
+        done();
+      })
+    }).catch((error) => {
+      done(error);
+    });
+  });
 });
