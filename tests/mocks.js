@@ -1,5 +1,8 @@
+const path = require('path')
+const fixtureFile = path.join(__dirname, 'fixture-files/hi.md');
+
 module.exports = function(dialog) {
   dialog.showOpenDialog = () => {
-    return ['/Users/brittanystoroz/github/turing/firesale-demo/tests/fixture-files/hi.md'];
+    return [fixtureFile];
   };
 };
